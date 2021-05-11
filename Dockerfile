@@ -3,7 +3,7 @@ FROM docker:19.03
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
        apk add --no-cache btrfs-progs e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
-       curl sshpass ca-certificates bash git python3 docker-compose \
+       curl sshpass ca-certificates bash git python3 docker-compose jq \
 	; \
 	if zfs="$(apk info --no-cache --quiet zfs)" && [ -n "$zfs" ]; then \
 		apk add --no-cache zfs; \
@@ -52,8 +52,8 @@ RUN python3 -m ensurepip; pip3 install --upgrade pip; pip3 install awscli; pip3 
 
 # Install fabric3
 RUN set -x \
-    && apk add --no-cache gzip tar zip bash python3 libffi openssl openssh ca-certificates tzdata \
-    && apk add --no-cache whois gnupg unzip libc6-compat jq \
+    && apk add --no-cache gzip tar zip python3 libffi openssh tzdata \
+    && apk add --no-cache whois gnupg unzip libc6-compat \
     && apk add --no-cache --virtual .build-deps python3-dev musl-dev gcc libffi-dev openssl-dev make \
     && pip3 install fabric; pip3 cache purge; rm -rf /root/.cache /tmp/* /src; apk del .build-deps; rm -rf /var/cache/apk/*
 
