@@ -2,8 +2,8 @@ FROM docker:19.03
 
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
-	apk add --no-cache btrfs-progs e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
-    curl sshpass ca-certificates bash git python3 docker openrc docker-compose \
+       apk add --no-cache btrfs-progs e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
+       curl sshpass ca-certificates bash git python3 docker-compose \
 	; \
 	if zfs="$(apk info --no-cache --quiet zfs)" && [ -n "$zfs" ]; then \
 		apk add --no-cache zfs; \
@@ -48,7 +48,7 @@ RUN curl -sLO ${AWS_IAM_AUTH_VERSION_URL} && \
 RUN python3 -m ensurepip; pip3 install --upgrade pip; pip3 install awscli; pip3 cache purge
 
 # Install jq
-RUN apk add --update --no-cache jq; rc-update add docker boot
+RUN apk add --update --no-cache jq
 RUN apk add --no-cache fabric --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 COPY dockerd-entrypoint.sh /usr/local/bin/
