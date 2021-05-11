@@ -13,9 +13,6 @@ docker build for AWS, it can be used as normal kubectl tool as well
 
 https://github.com/alpine-docker/k8s
 
-### Daily Travis CI build logs
-
-https://travis-ci.org/alpine-docker/k8s
 
 ### Docker image tags
 
