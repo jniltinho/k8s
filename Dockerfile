@@ -55,7 +55,7 @@ RUN set -x \
     && apk add --no-cache gzip tar zip python3 libffi openssh tzdata \
     && apk add --no-cache whois gnupg unzip libc6-compat \
     && apk add --no-cache --virtual .build-deps python3-dev musl-dev gcc libffi-dev openssl-dev make \
-    && pip3 install fabric; pip3 cache purge; rm -rf /root/.cache /tmp/* /src; apk del .build-deps; rm -rf /var/cache/apk/*
+    && pip3 install fabric3; pip3 cache purge; rm -rf /root/.cache /tmp/* /src; apk del .build-deps; rm -rf /var/cache/apk/*
 
 
 COPY dockerd-entrypoint.sh /usr/local/bin/
