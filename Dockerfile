@@ -52,7 +52,7 @@ RUN python3 -m ensurepip; pip3 install --upgrade pip; pip3 install awscli; pip3 
 
 # Install jq
 RUN apk add --update --no-cache jq
-RUN apk add --no-cache fabric --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+RUN apk add --no-cache fabric3 --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 COPY dockerd-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
