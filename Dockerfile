@@ -10,7 +10,6 @@ RUN set -eux; \
 	fi
 
 # TODO aufs-tools
-
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN addgroup -S dockremap; adduser -S -G dockremap dockremap; echo 'dockremap:165536:65536' >> /etc/subuid; echo 'dockremap:165536:65536' >> /etc/subgid
 
@@ -22,7 +21,7 @@ RUN curl -#kL -o /usr/local/bin/dind "https://raw.githubusercontent.com/docker/d
 
 ## https://stackoverflow.com/questions/54099218/how-can-i-install-docker-inside-an-alpine-container
 # Ignore to update version here, it is controlled by .travis.yml and build.sh
-# docker build --no-cache --build-arg KUBECTL_VERSION=${tag} --build-arg HELM_VERSION=${helm} --build-arg KUSTOMIZE_VERSION=${kustomize_version} -t ${image}:${tag} .
+# docker build --no-cache --build-arg KUBECTL_VERSION=${tag} --build-arg HELM_VERSION=${helm} -t ${image}:${tag} .
 ARG HELM_VERSION=3.2.1
 ARG KUBECTL_VERSION=1.18.5
 
