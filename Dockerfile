@@ -22,7 +22,7 @@ RUN curl -#kL -o /usr/local/bin/dind "https://raw.githubusercontent.com/docker/d
 ## https://stackoverflow.com/questions/54099218/how-can-i-install-docker-inside-an-alpine-container
 # Ignore to update version here, it is controlled by .travis.yml and build.sh
 # docker build --no-cache --build-arg KUBECTL_VERSION=${tag} --build-arg HELM_VERSION=${helm} -t ${image}:${tag} .
-ARG HELM_VERSION=3.2.1
+ARG HELM_VERSION=3.5.4
 ARG KUBECTL_VERSION=1.18.5
 
 # https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
