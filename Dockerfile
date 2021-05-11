@@ -50,9 +50,13 @@ RUN curl -sLO ${AWS_IAM_AUTH_VERSION_URL}; mv aws-iam-authenticator /usr/bin/aws
 # Install awscli
 RUN python3 -m ensurepip; pip3 install --upgrade pip; pip3 install awscli; pip3 cache purge
 
-# Install jq
-RUN apk add --update --no-cache jq
-RUN apk add --no-cache fabric3 --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+# Install fabric3
+RUN set -x \
+    && apk add --no-cache gzip tar zip bash python3 libffi openssl openssh ca-certificates tzdata \
+    && apk add --no-cache whois gnupg unzip libc6-compat jq \
+    && apk add --no-cache --virtual .build-deps python3-dev musl-dev gcc libffi-dev openssl-dev make \
+    && pip3 install fabric3; pip3 cache purge; rm -rf /root/.cache /tmp/* /src; apk del .build-deps; rm -rf /var/cache/apk/*
+
 
 COPY dockerd-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
