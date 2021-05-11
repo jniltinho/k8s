@@ -52,6 +52,7 @@ RUN apk add --update --no-cache jq
 RUN apk add --no-cache fabric --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 COPY dockerd-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
 
 VOLUME /var/lib/docker
 EXPOSE 2375 2376
