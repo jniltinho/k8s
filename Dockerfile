@@ -41,15 +41,11 @@ RUN curl -#kL -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/down
 
 # Install kubectl (same version of aws esk)
 RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
-    mv kubectl /usr/bin/kubectl && \
-    chmod +x /usr/bin/kubectl
+    mv kubectl /usr/bin/kubectl; chmod +x /usr/bin/kubectl
 
 
 # Install aws-iam-authenticator (latest version)
-RUN curl -sLO ${AWS_IAM_AUTH_VERSION_URL} && \
-    mv aws-iam-authenticator /usr/bin/aws-iam-authenticator && \
-    chmod +x /usr/bin/aws-iam-authenticator
-
+RUN curl -sLO ${AWS_IAM_AUTH_VERSION_URL}; mv aws-iam-authenticator /usr/bin/aws-iam-authenticator; chmod +x /usr/bin/aws-iam-authenticator
 
 # Install awscli
 RUN python3 -m ensurepip; pip3 install --upgrade pip; pip3 install awscli; pip3 cache purge
