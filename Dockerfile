@@ -3,11 +3,11 @@ FROM docker:19.03
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
        apk add --no-cache btrfs-progs e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
-       curl sshpass ca-certificates bash git python3 docker-compose jq \
-	; \
-	if zfs="$(apk info --no-cache --quiet zfs)" && [ -n "$zfs" ]; then \
-		apk add --no-cache zfs; \
-	fi
+       curl sshpass ca-certificates bash git python3 ruby ruby-json ruby-bundler docker-compose jq \
+        ; \
+        if zfs="$(apk info --no-cache --quiet zfs)" && [ -n "$zfs" ]; then \
+                apk add --no-cache zfs; \
+        fi
 
 # TODO aufs-tools
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
@@ -15,6 +15,7 @@ RUN addgroup -S dockremap; adduser -S -G dockremap dockremap; echo 'dockremap:16
 
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
+ENV BOLT_GEM=gem_install
 
 RUN curl -#kL -o /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; chmod +x /usr/local/bin/dind
 
@@ -57,7 +58,8 @@ RUN python3 -m ensurepip; pip3 install --upgrade pip; pip3 install awscli; pip3 
 RUN set -x \
     && apk add --no-cache gzip tar zip python3 libffi openssh tzdata \
     && apk add --no-cache whois gnupg unzip libc6-compat \
-    && apk add --no-cache --virtual .build-deps python3-dev musl-dev gcc libffi-dev openssl-dev make \
+    && apk add --no-cache --virtual .build-deps python3-dev ruby-dev musl-dev gcc libffi-dev openssl-dev make \
+    && gem install bolt \
     && pip3 install fabric3; pip3 cache purge; rm -rf /root/.cache /tmp/* /src; apk del .build-deps; rm -rf /var/cache/apk/*
 
 
