@@ -16,6 +16,7 @@ RUN addgroup -S dockremap; adduser -S -G dockremap dockremap; echo 'dockremap:16
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
 ENV BOLT_GEM=gem_install
+ENV BOLT_DISABLE_ANALYTICS=true
 
 RUN curl -#kL -o /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; chmod +x /usr/local/bin/dind
 
