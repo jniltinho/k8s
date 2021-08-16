@@ -9,8 +9,8 @@ docker build for AWS, it can be used as normal kubectl tool as well
 - [yq](https://github.com/mikefarah/yq)
 - [katafygio](https://github.com/bpineau/katafygio)
 - [puppet-bolt](https://github.com/puppetlabs/bolt)
-- docker-compose
-- fabric3
+- [docker-compose](https://github.com/docker/compose)
+- [fabric3](https://docs.fabfile.org/en/2.6/)
 - General tools, such as bash, curl
 
 ### Github Repo
