@@ -5,8 +5,12 @@ docker build for AWS, it can be used as normal kubectl tool as well
 ### Installed tools
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [aws-iam-authenticator](https://github.com/kubernetes-sigs/aws-iam-authenticator) (latest version when run the build)
-- [awscli](https://github.com/aws/aws-cli) (latest version when run the build)
+- [awscli](https://github.com/aws/aws-cli)
+- [yq](https://github.com/mikefarah/yq)
+- [katafygio](https://github.com/bpineau/katafygio)
+- [puppet-bolt](https://github.com/puppetlabs/bolt)
+- docker-compose
+- fabric3
 - General tools, such as bash, curl
 
 ### Github Repo
