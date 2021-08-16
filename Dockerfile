@@ -27,8 +27,9 @@ RUN curl -#kL -o /usr/local/bin/dind "https://raw.githubusercontent.com/docker/d
 ARG HELM_VERSION=3.5.4
 ARG KUBECTL_VERSION=1.18.5
 
-# https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html
-ARG AWS_IAM_AUTH_VERSION_URL=https://amazon-eks.s3.us-west-2.amazonaws.com/1.17.9/2020-08-04/bin/linux/amd64/aws-iam-authenticator
+ARG YQ_URL=https://github.com/mikefarah/yq/releases/download/v4.11.2/yq_linux_amd64
+ARG KATAFYGIO_URL=https://github.com/bpineau/katafygio/releases/download/v0.8.3/katafygio_0.8.3_linux_amd64
+
 
 # Install helm (latest release)
 # ENV BASE_URL="https://storage.googleapis.com/kubernetes-helm"
@@ -37,20 +38,14 @@ ENV TAR_FILE="helm-v${HELM_VERSION}-linux-amd64.tar.gz"
 RUN curl -sL ${BASE_URL}/${TAR_FILE} | tar -xvz; mv linux-amd64/helm /usr/bin/helm; chmod +x /usr/bin/helm; rm -rf linux-amd64
 
 
-RUN curl -#kL -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.8.0/yq_linux_amd64 \
-    && curl -#kL -o /usr/local/bin/katafygio https://github.com/bpineau/katafygio/releases/download/v0.8.3/katafygio_0.8.3_linux_amd64 \
-    && curl -LO https://github.com/tdewolff/minify/releases/download/v2.9.10/minify_linux_amd64.tar.gz \
-    && mkdir minify_ && tar -xf minify_linux_amd64.tar.gz -C minify_ \
-    && mv minify_/minify /usr/local/bin/ && rm -rf *.tar.gz minify_ \
+RUN curl -#kL -o /usr/local/bin/yq ${YQ_URL} \
+    && curl -#kL -o /usr/local/bin/katafygio ${KATAFYGIO_URL} \
     && chmod +x /usr/local/bin/yq /usr/local/bin/katafygio
 
 # Install kubectl (same version of aws esk)
 RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
     mv kubectl /usr/bin/kubectl; chmod +x /usr/bin/kubectl
 
-
-# Install aws-iam-authenticator (latest version)
-RUN curl -sLO ${AWS_IAM_AUTH_VERSION_URL}; mv aws-iam-authenticator /usr/bin/aws-iam-authenticator; chmod +x /usr/bin/aws-iam-authenticator
 
 # Install awscli
 RUN python3 -m ensurepip; pip3 install --upgrade pip; pip3 install awscli; pip3 cache purge
