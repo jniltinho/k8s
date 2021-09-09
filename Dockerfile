@@ -42,6 +42,12 @@ RUN curl -#kL -o /usr/local/bin/yq ${YQ_URL} \
     && curl -#kL -o /usr/local/bin/katafygio ${KATAFYGIO_URL} \
     && chmod +x /usr/local/bin/yq /usr/local/bin/katafygio
 
+RUN curl -sLO https://downloads.dockerslim.com/releases/1.36.4/dist_linux.tar.gz \
+    && tar -xvf dist_linux.tar.gz \
+    && chmod +x dist_linux/docker-slim* \ 
+    && mv dist_linux/docker-slim* /usr/local/bin/ \
+    && rm -rf dist_linux*
+
 # Install kubectl (same version of aws esk)
 RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
     mv kubectl /usr/bin/kubectl; chmod +x /usr/bin/kubectl
