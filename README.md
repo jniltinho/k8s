@@ -20,7 +20,7 @@ https://github.com/alpine-docker/k8s
 
 ### Docker image tags
 
-https://hub.docker.com/r/alpine/k8s/tags/
+https://hub.docker.com/r/jniltinho/k8s/tags/
 
 # Why we need it
 
