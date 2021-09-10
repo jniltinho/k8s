@@ -11,6 +11,8 @@ docker build for AWS, it can be used as normal kubectl tool as well
 - [puppet-bolt](https://github.com/puppetlabs/bolt)
 - [docker-compose](https://github.com/docker/compose)
 - [fabric3](https://docs.fabfile.org/en/2.6/)
+- [docker-slim](https://github.com/docker-slim/docker-slim)
+- rsync
 - General tools, such as bash, curl
 
 ### Github Repo
