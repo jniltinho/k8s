@@ -3,7 +3,7 @@ FROM docker:19.03
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
        apk add --no-cache btrfs-progs e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
-       curl sshpass ca-certificates bash git python3 ruby ruby-json ruby-bundler docker-compose jq rsync \
+       curl sshpass ca-certificates bash git unzip python3 ruby ruby-json ruby-bundler docker-compose jq rsync \
         ; \
         if zfs="$(apk info --no-cache --quiet zfs)" && [ -n "$zfs" ]; then \
                 apk add --no-cache zfs; \
@@ -20,6 +20,11 @@ ENV BOLT_DISABLE_ANALYTICS=true
 
 RUN curl -#kL -o /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; chmod +x /usr/local/bin/dind
 
+## Vault CLI
+RUN curl -#kLO https://releases.hashicorp.com/vault/1.9.3/vault_1.9.3_linux_amd64.zip \
+    && unzip vault_1.9.3_linux_amd64.zip \
+    && mv vault /usr/local/bin/ \
+    && rm -f vault_1.9.3_linux_amd64.zip
 
 ## https://stackoverflow.com/questions/54099218/how-can-i-install-docker-inside-an-alpine-container
 # Ignore to update version here, it is controlled by .travis.yml and build.sh
