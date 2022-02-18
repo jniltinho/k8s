@@ -7,17 +7,8 @@ on:
     branches: [ master ]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag dind-alpine-k8s:$(date +%s)
-
-  push:
-    runs-on: ubuntu-latest
-    needs: build
     steps:
     - name: Docker Login
       uses: docker/login-action@v1.13.0
