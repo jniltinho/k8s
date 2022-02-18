@@ -53,6 +53,12 @@ RUN curl -sLO https://downloads.dockerslim.com/releases/1.36.4/dist_linux.tar.gz
     && mv dist_linux/docker-slim* /usr/local/bin/ \
     && rm -rf dist_linux*
 
+## doctl Command Line Interface (CLI) - DigitalOcean
+RUN curl -#kLO https://github.com/digitalocean/doctl/releases/download/v1.70.0/doctl-1.70.0-linux-amd64.tar.gz \
+    && tar -xvf doctl-1.70.0-linux-amd64.tar.gz \
+    && mv doctl /usr/local/bin/ \
+    && rm -f doctl-1.70.0-linux-amd64.tar.gz
+    
 # Install kubectl (same version of aws esk)
 RUN curl -sLO https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl && \
     mv kubectl /usr/bin/kubectl; chmod +x /usr/bin/kubectl
