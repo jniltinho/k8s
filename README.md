@@ -13,6 +13,7 @@ docker build for AWS, it can be used as normal kubectl tool as well
 - [fabric3](https://docs.fabfile.org/en/2.6/)
 - [docker-slim](https://github.com/docker-slim/docker-slim)
 - [vault](https://www.vaultproject.io/docs/commands)
+- [doctl](https://docs.digitalocean.com/reference/doctl/)
 - rsync
 - General tools, such as bash, curl
 
