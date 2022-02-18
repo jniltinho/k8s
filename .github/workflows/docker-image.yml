@@ -20,6 +20,9 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_PACKAGES_TOKEN }}
     - run: |
-        ls -ila
-        docker build . --file Dockerfile --tag ghcr.io/${{ github.actor }}/dind-alpine-k8s:0.0.1
-        docker push ghcr.io/${{ github.actor }}/dind-alpine-k8s:0.0.1
+        docker build . --file Dockerfile --tag ghcr.io/${{ github.actor }}/dind-alpine-k8s:latest
+        docker tag ghcr.io/${{ github.actor }}/dind-alpine-k8s:latest ghcr.io/${{ github.actor }}/dind-alpine-k8s:${{ github.sha }}
+
+    - run: |
+        docker push ghcr.io/${{ github.actor }}/dind-alpine-k8s:latest
+        docker push ghcr.io/${{ github.actor }}/dind-alpine-k8s:${{ github.sha }}
