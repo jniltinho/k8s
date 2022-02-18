@@ -7,7 +7,19 @@ on:
     branches: [ master ]
 
 jobs:
+
   build:
+    runs-on: ubuntu-latest
+    container:
+      image: docker://golang:latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run Commands
+    - run: |
+        ls -ila
+        go version
+
+  push:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
