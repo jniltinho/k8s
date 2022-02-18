@@ -37,5 +37,5 @@ jobs:
         docker tag ghcr.io/${{ github.actor }}/dind-alpine-k8s:latest ghcr.io/${{ github.actor }}/dind-alpine-k8s:${GITHUB_SHA::6}
 
     - run: |
-        docker push ghcr.io/${{ github.actor }}/dind-alpine-k8s:latest
         docker push ghcr.io/${{ github.actor }}/dind-alpine-k8s:${GITHUB_SHA::6}
+        docker push ghcr.io/${{ github.actor }}/dind-alpine-k8s:latest
