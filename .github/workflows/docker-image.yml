@@ -9,7 +9,7 @@ on:
 jobs:
 
   build:
-    runs-on: linuxpro
+    runs-on: linux
     container:
       image: docker://golang:latest
     steps:
