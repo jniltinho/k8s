@@ -15,7 +15,7 @@ env:
 
 jobs:
   build:
-    runs-on: linuxpro
+    runs-on: ubuntu-latest
     container:
       image: docker://golang:latest
     steps:
