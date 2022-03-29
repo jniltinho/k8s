@@ -8,6 +8,8 @@ on:
 env:
   AUTHOR: '${{ github.event.pusher.name }}\<${{ github.event.pusher.email}}\>'
   AUTHOR_URL: 'https://github.com/${{github.actor}}'
+  MESSAGE: ${{ github.event.client_payload.message }}
+  MESSAGE2: ${{ github.event.commits[0].message }}
 
 
 
@@ -22,18 +24,8 @@ jobs:
     - run: |
         ls -ila
         go version
-        echo "${myAuthor}"
-        echo ${{ env.myAuthor }}
-        echo "${myAuthor}" >> author1.txt
-        echo ${{ env.myAuthor }} >> author2.txt
-        cat author1.txt
-        cat author2.txt
-        echo "${myAuthor2}"
-        echo ${{ env.myAuthor2 }}
-        echo "${myAuthor2}" >> author1.txt
-        echo ${{ env.myAuthor2 }} >> author2.txt
-        cat author1.txt
-        cat author2.txt
+        echo "$MESSAGE"
+        echo "$MESSAGE2"
 
   push:
     runs-on: ubuntu-latest
