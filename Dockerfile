@@ -3,7 +3,7 @@ FROM docker:19.03
 # https://github.com/docker/docker/blob/master/project/PACKAGERS.md#runtime-dependencies
 RUN set -eux; \
        apk add --no-cache btrfs-progs e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
-       curl sshpass ca-certificates bash git unzip python3 ruby ruby-json ruby-bundler docker-compose jq rsync \
+       curl sshpass ca-certificates openssh-client bash git unzip python3 ruby ruby-json ruby-bundler docker-compose jq rsync \
         ; \
         if zfs="$(apk info --no-cache --quiet zfs)" && [ -n "$zfs" ]; then \
                 apk add --no-cache zfs; \
