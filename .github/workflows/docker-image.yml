@@ -1,13 +1,13 @@
-name: Docker Image CI
+name: 'Create Docker Image'
+
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - build
+      
+
 env:
-  AUTHOR: '${{github.event.pusher.name}}\<${{ github.event.pusher.email}}\>'
-  AUTHOR_URL: 'https://github.com/${{github.actor}}'
   IMAGE_NAME: 'ghcr.io/${{github.repository_owner}}/dind-alpine-k8s'
 
 
