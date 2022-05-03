@@ -24,7 +24,7 @@ https://github.com/alpine-docker/k8s
 
 ### Docker image tags
 
-https://hub.docker.com/r/jniltinho/k8s/tags/
+https://github.com/jniltinho/k8s/pkgs/container/dind-alpine-k8s
 
 # Why we need it
 
