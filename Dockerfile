@@ -22,19 +22,10 @@ RUN apk add --no-cache e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap 
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# TODO aufs-tools
-# set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
-RUN addgroup -S dockremap; adduser -S -G dockremap dockremap; echo 'dockremap:165536:65536' >> /etc/subuid; echo 'dockremap:165536:65536' >> /etc/subgid
-
 RUN curl -skL -o 'docker.tgz' "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.18.tgz" \
     && tar --extract --file docker.tgz --strip-components 1 --directory $FOLDER_BIN/ --no-same-owner --exclude 'docker/docker' \
     && rm docker.tgz; dockerd --version; containerd --version; ctr --version; runc --version \
     && ln -s $FOLDER_BIN/dockerd $FOLDER_BIN/docker
-
-# https://github.com/docker/docker/tree/master/hack/dind
-ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
-RUN curl -skL -o $FOLDER_BIN/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"
-RUN curl -skL -o $FOLDER_BIN/yq ${YQ_URL}; curl -skL -o $FOLDER_BIN/katafygio ${KATAFYGIO_URL}
 
 ## Install kubectl, docker-compose
 RUN curl -skL -o $FOLDER_BIN/kubectl ${KUBECTL}; curl -skL -o $FOLDER_BIN/docker-compose ${COMPOSE}
@@ -53,7 +44,6 @@ RUN curl -skLO https://github.com/cli/cli/releases/download/v2.17.0/gh_2.17.0_li
 RUN curl -skLO https://github.com/ankitpokhrel/jira-cli/releases/download/v1.1.0/jira_1.1.0_linux_x86_64.tar.gz \
    && tar --extract --file *.gz --strip-components 2 --directory $FOLDER_BIN/ --no-same-owner \
    && rm -f *.gz
-
 
 COPY --from=node:16-alpine3.16 /opt/yarn-v1.22.19 /opt/yarn-v1.22.19
 COPY --from=node:16-alpine3.16 /usr/local/bin/node /usr/local/bin/node
