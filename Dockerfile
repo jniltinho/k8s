@@ -56,7 +56,7 @@ RUN curl -skLO https://github.com/ankitpokhrel/jira-cli/releases/download/v1.1.0
 
 
 RUN chmod +x $FOLDER_BIN/*
-RUN upx --best --lzma $FOLDER_BIN/{kubectl,containerd,dockerd,docker-slim,ctr,gh,katafygio,jira,yq,docker-compose}
+RUN upx --best --lzma $FOLDER_BIN/{kubectl,containerd,dockerd,docker-slim,gh,katafygio,jira,yq,docker-compose}
 
 ## Install Gcloud
 RUN addgroup -g 1000 -S cloudsdk && adduser -u 1000 -S cloudsdk -G cloudsdk
