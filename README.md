@@ -1,6 +1,5 @@
 # Kubernetes CI/CD tools
 
-docker build for AWS, it can be used as normal kubectl tool as well
 
 ### Installed tools
 
