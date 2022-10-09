@@ -14,7 +14,7 @@ ARG KUBECTL_VERSION=1.23.5
 
 RUN apk add --no-cache e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
     curl sshpass ca-certificates openssh-client bash bash-completion git unzip python3 docker-compose jq rsync \
-    py3-crcmod py3-openssl libc6-compat gnupg tar zip libffi openssh tzdata whois gnupg libc6-compat \
+    py3-crcmod py3-openssl py3-pip libc6-compat gnupg tar zip libffi openssh tzdata whois gnupg libc6-compat \
     && rm -rf /root/.cache /tmp/* /src; rm -rf /var/cache/apk/*
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
