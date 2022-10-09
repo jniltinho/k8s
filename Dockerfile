@@ -23,10 +23,8 @@ RUN apk add --no-cache e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap 
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN curl -skL -o 'docker.tgz' "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.18.tgz" \
-    && tar --extract --file docker.tgz --strip-components 1 --directory $FOLDER_BIN/ --no-same-owner --exclude 'docker/docker' \
-    && rm docker.tgz; dockerd --version; containerd --version; ctr --version; runc --version \
-    && ln -s $FOLDER_BIN/dockerd $FOLDER_BIN/docker
+RUN curl -skLO https://download.docker.com/linux/static/stable/x86_64/docker-20.10.18.tgz \
+    && tar -xf docker-*.tgz; cp docker/docker $FOLDER_BIN/ ; rm -rf docker*
 
 ## Install kubectl, docker-compose
 RUN curl -skL -o $FOLDER_BIN/kubectl ${KUBECTL}; curl -skL -o $FOLDER_BIN/docker-compose ${COMPOSE}
@@ -53,7 +51,7 @@ COPY --from=node:16-alpine3.16 /usr/local/lib/node_modules /usr/local/lib/node_m
 RUN cd $FOLDER_BIN/; ln -s ../lib/node_modules/npm/bin/npm-cli.js npm; ln -s ../lib/node_modules/npm/bin/npx-cli.js npx
 
 RUN chmod +x $FOLDER_BIN/*
-RUN upx --best --lzma $FOLDER_BIN/{node,kubectl,containerd,dockerd,docker-slim,gh,katafygio,jira,yq,docker-compose}
+RUN upx --best --lzma $FOLDER_BIN/{node,kubectl,docker,gh,katafygio,jira,yq,docker-compose}
 
 ## Install Gcloud
 RUN curl -sLO https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-${GCLOUD_VERSION}-linux-x86_64.tar.gz \
