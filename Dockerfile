@@ -36,17 +36,17 @@ RUN curl -sLO https://downloads.dockerslim.com/releases/1.36.4/dist_linux.tar.gz
     && tar -xvf dist_linux.tar.gz; chmod +x dist_linux/docker-slim* \
     && mv dist_linux/docker-slim* $FOLDER_BIN/; rm -rf dist_linux*
 
-curl -skLO https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz
-tar -xf upx-*.tar.xz ; mv upx-*/upx $FOLDER_BIN/; rm -rf upx-3.*
+RUN curl -skLO https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz \
+    && tar -xf upx-*.tar.xz ; mv upx-*/upx $FOLDER_BIN/; rm -rf upx-3.*
 
-curl -skLO https://github.com/cli/cli/releases/download/v2.17.0/gh_2.17.0_linux_amd64.tar.gz
-tar -xf gh_*_linux_amd64.tar.gz; mv gh_*_linux_amd64/bin/gh $FOLDER_BIN/ ; rm -rf gh_*_linux_amd64*
+RUN curl -skLO https://github.com/cli/cli/releases/download/v2.17.0/gh_2.17.0_linux_amd64.tar.gz \
+    && tar -xf gh_*_linux_amd64.tar.gz; mv gh_*_linux_amd64/bin/gh $FOLDER_BIN/ ; rm -rf gh_*_linux_amd64*
 
-curl -skLO https://github.com/ankitpokhrel/jira-cli/releases/download/v1.1.0/jira_1.1.0_linux_x86_64.tar.gz
-tar -xf jira_*_linux_x86_64.tar.gz; mv jira_*_linux_x86_64/bin/jira $FOLDER_BIN/ ; rm -rf jira_*_linux_x86_64*
+RUN curl -skLO https://github.com/ankitpokhrel/jira-cli/releases/download/v1.1.0/jira_1.1.0_linux_x86_64.tar.gz \
+   && tar -xf jira_*_linux_x86_64.tar.gz; mv jira_*_linux_x86_64/bin/jira $FOLDER_BIN/ ; rm -rf jira_*_linux_x86_64*
 
 ## Install kubectl
-curl -skL https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o $FOLDER_BIN/kubectl
+RUN curl -skL https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o $FOLDER_BIN/kubectl
 
 RUN chmod +x $FOLDER_BIN/*
 RUN upx --best --lzma $FOLDER_BIN/{kubectl,gh,katafygio,jira,yq}
