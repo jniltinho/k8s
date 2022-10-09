@@ -28,6 +28,7 @@ RUN curl -skLO https://download.docker.com/linux/static/stable/x86_64/docker-20.
 
 ## Install kubectl, docker-compose
 RUN curl -skL -o $FOLDER_BIN/kubectl ${KUBECTL}; curl -skL -o $FOLDER_BIN/docker-compose ${COMPOSE}
+RUN curl -skL -o $FOLDER_BIN/katafygio ${KATAFYGIO_URL}; curl -skL -o $FOLDER_BIN/yq ${YQ_URL}
 
 RUN curl -sLO https://downloads.dockerslim.com/releases/1.38.0/dist_linux.tar.gz \
     && tar --extract --file dist_linux.tar.gz --strip-components 1 --directory $FOLDER_BIN/ --no-same-owner \
