@@ -58,7 +58,6 @@ RUN addgroup -g 1000 -S cloudsdk && adduser -u 1000 -S cloudsdk -G cloudsdk
 RUN curl -sLO https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-${GCLOUD_VERSION}-linux-x86_64.tar.gz \
     && tar -xf google-cloud-*-linux-x86_64.tar.gz \
     && mv google-cloud-sdk /opt/ && rm -f google-cloud-*-linux-x86_64.tar.gz \
-    && cp /opt/google-cloud-sdk/completion.bash.inc /etc/bash_completion.d/ \
     && echo 'source /opt/google-cloud-sdk/path.bash.inc' >> /etc/profile \
     && source /opt/google-cloud-sdk/path.bash.inc \
     && gcloud config set core/disable_usage_reporting true \
