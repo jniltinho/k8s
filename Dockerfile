@@ -14,6 +14,7 @@ ARG KATAFYGIO_URL=https://github.com/bpineau/katafygio/releases/download/v0.8.3/
 ARG COMPOSE=https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-x86_64
 ARG KUBECTL=https://storage.googleapis.com/kubernetes-release/release/v1.23.5/bin/linux/amd64/kubectl
 
+WORKDIR /usr/src/backend
 
 RUN apk add --no-cache e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
     curl sshpass ca-certificates openssh-client bash bash-completion git unzip python3 jq rsync \
