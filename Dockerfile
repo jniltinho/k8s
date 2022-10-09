@@ -10,7 +10,7 @@ ARG GCLOUD_VERSION=371.0.0
 
 
 RUN apk add --no-cache e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
-    curl sshpass ca-certificates openssh-client bash git unzip python3 docker-compose jq rsync
+    curl sshpass ca-certificates openssh-client bash bash-completion git unzip python3 docker-compose jq rsync
 
 # TODO aufs-tools
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
