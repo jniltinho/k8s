@@ -65,7 +65,6 @@ RUN chmod +x $FOLDER_BIN/*
 RUN upx --best --lzma $FOLDER_BIN/{node,kubectl,containerd,dockerd,docker-slim,gh,katafygio,jira,yq,docker-compose}
 
 ## Install Gcloud
-RUN addgroup -g 1000 -S cloudsdk && adduser -u 1000 -S cloudsdk -G cloudsdk
 RUN curl -sLO https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-${GCLOUD_VERSION}-linux-x86_64.tar.gz \
     && tar -xf google-cloud-*-linux-x86_64.tar.gz \
     && mv google-cloud-sdk /opt/ && rm -f google-cloud-*-linux-x86_64.tar.gz \
@@ -81,12 +80,3 @@ RUN apk add --no-cache --virtual .build-deps python3-dev ruby-dev musl-dev gcc l
     && python3 -m pip install --upgrade pip wheel setuptools virtualenv termcolor distro nox \
     && pip3 install fabric3; pip3 cache purge; rm -rf /root/.cache /tmp/* /src; apk del .build-deps; rm -rf /var/cache/apk/*
 
-
-COPY dockerd-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/dockerd-entrypoint.sh
-
-VOLUME /var/lib/docker
-EXPOSE 2375 2376
-
-ENTRYPOINT ["dockerd-entrypoint.sh"]
-CMD []
