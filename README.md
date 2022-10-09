@@ -5,7 +5,6 @@ docker build for AWS, it can be used as normal kubectl tool as well
 ### Installed tools
 
 - [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [awscli](https://github.com/aws/aws-cli)
 - [yq](https://github.com/mikefarah/yq)
 - [katafygio](https://github.com/bpineau/katafygio)
 - [docker-compose](https://github.com/docker/compose)
