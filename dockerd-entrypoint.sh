@@ -180,7 +180,7 @@ if [ "$1" = 'dockerd' ]; then
 	fi
 else
 	# if it isn't `dockerd` we're trying to run, pass it through `docker-entrypoint.sh` so it gets `DOCKER_HOST` set appropriately too
-	set -- docker-entrypoint.sh "$@"
+	set -- dockerd-entrypoint.sh "$@"
 fi
 
 exec "$@"
