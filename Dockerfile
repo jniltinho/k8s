@@ -16,9 +16,9 @@ ARG KUBECTL=https://storage.googleapis.com/kubernetes-release/release/v1.23.5/bi
 
 WORKDIR /usr/src/backend
 
-RUN apk add --no-cache e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
-    curl sshpass ca-certificates openssh-client bash bash-completion git unzip python3 jq rsync \
-    py3-crcmod py3-openssl py3-pip libc6-compat gnupg tar zip libffi openssh tzdata whois gnupg libc6-compat \
+RUN apk add --no-cache iptables openssl xz pigz git unzip python3 jq rsync \
+    curl sshpass ca-certificates openssh-client bash bash-completion \
+    py3-crcmod py3-openssl py3-pip gnupg tar zip libffi openssh tzdata libc6-compat \
     && rm -rf /root/.cache /tmp/* /src; rm -rf /var/cache/apk/*
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
