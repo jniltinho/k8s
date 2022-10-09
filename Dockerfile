@@ -1,4 +1,4 @@
-FROM docker:20.10
+FROM python:3.9.14-alpine3.16
 
 ENV TZ America/Sao_Paulo
 ENV SHELL /bin/bash
@@ -23,14 +23,16 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN addgroup -S dockremap; adduser -S -G dockremap dockremap; echo 'dockremap:165536:65536' >> /etc/subuid; echo 'dockremap:165536:65536' >> /etc/subgid
 
+RUN curl -skL -o 'docker.tgz' "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.18.tgz" \
+	&& tar --extract --file docker.tgz --strip-components 1 --directory /usr/local/bin/ --no-same-owner --exclude 'docker/docker' \
+	&& rm docker.tgz; dockerd --version; containerd --version; ctr --version; runc --version
+
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
 RUN curl -skL -o /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; chmod +x /usr/local/bin/dind
 
-
 ARG YQ_URL=https://github.com/mikefarah/yq/releases/download/v4.11.2/yq_linux_amd64
 ARG KATAFYGIO_URL=https://github.com/bpineau/katafygio/releases/download/v0.8.3/katafygio_0.8.3_linux_amd64
-
 
 RUN curl -skL -o $FOLDER_BIN/yq ${YQ_URL}; curl -skL -o $FOLDER_BIN/katafygio ${KATAFYGIO_URL}
 
