@@ -17,6 +17,8 @@ RUN apk add --no-cache e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap 
     py3-crcmod py3-openssl libc6-compat gnupg tar zip libffi openssh tzdata whois gnupg libc6-compat \
     && rm -rf /root/.cache /tmp/* /src; rm -rf /var/cache/apk/*
 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 # TODO aufs-tools
 # set up subuid/subgid so that "--userns-remap=default" works out-of-the-box
 RUN addgroup -S dockremap; adduser -S -G dockremap dockremap; echo 'dockremap:165536:65536' >> /etc/subuid; echo 'dockremap:165536:65536' >> /etc/subgid
