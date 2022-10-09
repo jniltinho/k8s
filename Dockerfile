@@ -9,11 +9,14 @@ ENV LANG en_US.UTF-8
 
 ARG FOLDER_BIN=/usr/local/bin
 ARG GCLOUD_VERSION=371.0.0
-ARG KUBECTL_VERSION=1.23.5
+ARG YQ_URL=https://github.com/mikefarah/yq/releases/download/v4.11.2/yq_linux_amd64
+ARG KATAFYGIO_URL=https://github.com/bpineau/katafygio/releases/download/v0.8.3/katafygio_0.8.3_linux_amd64
+ARG COMPOSE=https://github.com/docker/compose/releases/download/v2.11.2/docker-compose-linux-x86_64
+ARG KUBECTL=https://storage.googleapis.com/kubernetes-release/release/v1.23.5/bin/linux/amd64/kubectl
 
 
 RUN apk add --no-cache e2fsprogs e2fsprogs-extra iptables openssl shadow-uidmap xfsprogs xz pigz \
-    curl sshpass ca-certificates openssh-client bash bash-completion git unzip python3 docker-compose jq rsync \
+    curl sshpass ca-certificates openssh-client bash bash-completion git unzip python3 jq rsync \
     py3-crcmod py3-openssl py3-pip libc6-compat gnupg tar zip libffi openssh tzdata whois gnupg libc6-compat \
     && rm -rf /root/.cache /tmp/* /src; rm -rf /var/cache/apk/*
 
@@ -24,36 +27,36 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN addgroup -S dockremap; adduser -S -G dockremap dockremap; echo 'dockremap:165536:65536' >> /etc/subuid; echo 'dockremap:165536:65536' >> /etc/subgid
 
 RUN curl -skL -o 'docker.tgz' "https://download.docker.com/linux/static/stable/x86_64/docker-20.10.18.tgz" \
-	&& tar --extract --file docker.tgz --strip-components 1 --directory /usr/local/bin/ --no-same-owner --exclude 'docker/docker' \
-	&& rm docker.tgz; dockerd --version; containerd --version; ctr --version; runc --version
+    && tar --extract --file docker.tgz --strip-components 1 --directory $FOLDER_BIN/ --no-same-owner --exclude 'docker/docker' \
+    && rm docker.tgz; dockerd --version; containerd --version; ctr --version; runc --version \
+    && ln -s $FOLDER_BIN/dockerd $FOLDER_BIN/docker
 
 # https://github.com/docker/docker/tree/master/hack/dind
 ENV DIND_COMMIT 42b1175eda071c0e9121e1d64345928384a93df1
-RUN curl -skL -o /usr/local/bin/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"; chmod +x /usr/local/bin/dind
-
-ARG YQ_URL=https://github.com/mikefarah/yq/releases/download/v4.11.2/yq_linux_amd64
-ARG KATAFYGIO_URL=https://github.com/bpineau/katafygio/releases/download/v0.8.3/katafygio_0.8.3_linux_amd64
-
+RUN curl -skL -o $FOLDER_BIN/dind "https://raw.githubusercontent.com/docker/docker/${DIND_COMMIT}/hack/dind"
 RUN curl -skL -o $FOLDER_BIN/yq ${YQ_URL}; curl -skL -o $FOLDER_BIN/katafygio ${KATAFYGIO_URL}
 
-RUN curl -sLO https://downloads.dockerslim.com/releases/1.36.4/dist_linux.tar.gz \
-    && tar -xvf dist_linux.tar.gz; chmod +x dist_linux/docker-slim* \
-    && mv dist_linux/docker-slim* $FOLDER_BIN/; rm -rf dist_linux*
+## Install kubectl, docker-compose
+RUN curl -skL -o $FOLDER_BIN/kubectl ${KUBECTL}; curl -skL -o $FOLDER_BIN/docker-compose ${COMPOSE}
+
+RUN curl -sLO https://downloads.dockerslim.com/releases/1.38.0/dist_linux.tar.gz \
+    && tar --extract --file dist_linux.tar.gz --strip-components 1 --directory $FOLDER_BIN/ --no-same-owner \
+    && rm -f *.gz
 
 RUN curl -skLO https://github.com/upx/upx/releases/download/v3.96/upx-3.96-amd64_linux.tar.xz \
     && tar -xf upx-*.tar.xz ; mv upx-*/upx $FOLDER_BIN/; rm -rf upx-3.*
 
 RUN curl -skLO https://github.com/cli/cli/releases/download/v2.17.0/gh_2.17.0_linux_amd64.tar.gz \
-    && tar -xf gh_*_linux_amd64.tar.gz; mv gh_*_linux_amd64/bin/gh $FOLDER_BIN/ ; rm -rf gh_*_linux_amd64*
+    && tar --extract --file *.gz --strip-components 2 --directory $FOLDER_BIN/ --no-same-owner --exclude 'man' \
+    && rm -f *.gz
 
 RUN curl -skLO https://github.com/ankitpokhrel/jira-cli/releases/download/v1.1.0/jira_1.1.0_linux_x86_64.tar.gz \
-   && tar -xf jira_*_linux_x86_64.tar.gz; mv jira_*_linux_x86_64/bin/jira $FOLDER_BIN/ ; rm -rf jira_*_linux_x86_64*
+   && tar --extract --file *.gz --strip-components 2 --directory $FOLDER_BIN/ --no-same-owner \
+   && rm -f *.gz
 
-## Install kubectl
-RUN curl -skL https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl -o $FOLDER_BIN/kubectl
 
 RUN chmod +x $FOLDER_BIN/*
-RUN upx --best --lzma $FOLDER_BIN/{kubectl,gh,katafygio,jira,yq}
+RUN upx --best --lzma $FOLDER_BIN/{kubectl,containerd,dockerd,docker-slim,ctr,gh,katafygio,jira,yq,docker-compose}
 
 ## Install Gcloud
 RUN addgroup -g 1000 -S cloudsdk && adduser -u 1000 -S cloudsdk -G cloudsdk
@@ -69,6 +72,7 @@ RUN curl -sLO https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-
 
 # Install fabric3
 RUN apk add --no-cache --virtual .build-deps python3-dev ruby-dev musl-dev gcc libffi-dev openssl-dev make \
+    && python3 -m pip install --upgrade pip wheel setuptools virtualenv termcolor distro nox \
     && pip3 install fabric3; pip3 cache purge; rm -rf /root/.cache /tmp/* /src; apk del .build-deps; rm -rf /var/cache/apk/*
 
 
