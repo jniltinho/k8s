@@ -4,7 +4,7 @@ ENV TZ America/Sao_Paulo
 ENV SHELL /bin/bash
 ENV PY_COLORS 1
 ENV FORCE_COLOR 1
-ENV PATH $PATH:/opt/google-cloud-sdk/bin
+ENV PATH $PATH:/opt/google-cloud-sdk/bin:/opt/yarn-v1.22.19/bin
 ENV LANG en_US.UTF-8
 
 ARG FOLDER_BIN=/usr/local/bin
@@ -55,8 +55,14 @@ RUN curl -skLO https://github.com/ankitpokhrel/jira-cli/releases/download/v1.1.0
    && rm -f *.gz
 
 
+COPY --from=node:16-alpine3.16 /opt/yarn-v1.22.19 /opt/yarn-v1.22.19
+COPY --from=node:16-alpine3.16 /usr/local/bin/node /usr/local/bin/node
+COPY --from=node:16-alpine3.16 /usr/local/lib/node_modules /usr/local/lib/node_modules
+
+RUN cd $FOLDER_BIN/; ln -s ../lib/node_modules/npm/bin/npm-cli.js npm; ln -s ../lib/node_modules/npm/bin/npx-cli.js npx
+
 RUN chmod +x $FOLDER_BIN/*
-RUN upx --best --lzma $FOLDER_BIN/{kubectl,containerd,dockerd,docker-slim,gh,katafygio,jira,yq,docker-compose}
+RUN upx --best --lzma $FOLDER_BIN/{node,kubectl,containerd,dockerd,docker-slim,gh,katafygio,jira,yq,docker-compose}
 
 ## Install Gcloud
 RUN addgroup -g 1000 -S cloudsdk && adduser -u 1000 -S cloudsdk -G cloudsdk
